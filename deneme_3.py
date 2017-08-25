@@ -31,9 +31,6 @@ class PuzzleApp(tk.Tk):
         
         container = tk.Frame(self)
         container.pack()
-        #container.pack(side="top", fill="both", expand = True)
-        #container.grid_rowconfigure(0, weight=1)
-        #container.grid_columnconfigure(0, weight=1)
         
 
         self.frames = {}
@@ -149,6 +146,16 @@ class AddWords(tk.Frame):
         button.grid(row=2, column=1)
         
         def chance_page():
+            new_start = StartPage(parent, controller)
+            new_dict = Dictionary(parent, controller)
+            new_quiz = WordQuiz(parent, controller)
+            controller.frames[StartPage] = new_start
+            controller.frames[Dictionary] = new_dict
+            controller.frames[WordQuiz] = new_quiz
+            new_start.grid(row=0, column=0, sticky="nsew")
+            new_dict.grid(row=0, column=0, sticky="nsew")
+            new_quiz.grid(row=0, column=0, sticky="nsew")
+            
             controller.show_frame(StartPage)
             
         button1 = tk.Button(self, text="Back to Home",
@@ -183,6 +190,16 @@ class DeleteWord(tk.Frame):
         button.grid(row=2, column=1)
 
         def chance_page():
+            new_start = StartPage(parent, controller)
+            new_dict = Dictionary(parent, controller)
+            new_quiz = WordQuiz(parent, controller)
+            controller.frames[StartPage] = new_start
+            controller.frames[Dictionary] = new_dict
+            controller.frames[WordQuiz] = new_quiz
+            new_start.grid(row=0, column=0, sticky="nsew")
+            new_dict.grid(row=0, column=0, sticky="nsew")
+            new_quiz.grid(row=0, column=0, sticky="nsew")
+            
             controller.show_frame(StartPage)
 
         button1 = tk.Button(self, text="Back to Home",
