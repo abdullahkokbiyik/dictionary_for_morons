@@ -127,19 +127,25 @@ class AddWords(tk.Frame):
             word_in_dict = Operations.control_word_in_db(entry.get())
             word = str(entry.get())
             mean = str(entry_1.get())
-            if word_in_dict == None:
-                data = (word, mean)
-                Operations.insert_in_db(data)
-            else:
-                if askyesno("Word is already exists !",
-                            'This word is already in your dictionary.\nDo you want to change ?\n'):
-                    Operations.change_meaning_in_db(word, mean)
-                    showinfo("Success", "Meaning of this word is successfully changed.")
+            if str(entry.get()) != "" and str(entry_1.get()) != "":
+                if word_in_dict == None:
+                    data = (word, mean)
+                    Operations.insert_in_db(data)
+                    showinfo("Success", "'{}' successfully added to database.".format(word))
                 else:
-                    showinfo("Nothing", "This word stays same.")
+                    if askyesno("Word is already exists !",
+                                'This word is already in your dictionary.\nDo you want to change ?\n'):
+                        Operations.change_meaning_in_db(word, mean)
+                        showinfo("Success", "Meaning of this word is successfully changed.")
+                    else:
+                        showinfo("Nothing", "This word stays same.")
 
-            entry.delete(0, tk.END)
-            entry_1.delete(0, tk.END)
+                entry.delete(0, tk.END)
+                entry_1.delete(0, tk.END)
+            else: 
+                showerror("Error", "You must fill all blanks !")
+                entry.delete(0, tk.END)
+                entry_1.delete(0, tk.END)
 
         button = tk.Button(self, text="Add",
                            command=add_data)
@@ -173,17 +179,20 @@ class DeleteWord(tk.Frame):
         def remove_data():
             word = str(entry.get())
             word_1 = Operations.control_word_in_db(word)
-            if word_1 != None:
-                if askyesno("Are you sure", "Are you sure for delete '{}' from your database ?".format(word)):
-                    Operations.delete_from_db(word)
-                    showinfo("Success", "'{}' successfully deleted from database.".format(word))
-                    entry.delete(0, tk.END)
+            if word != "":
+                if word_1 != None:
+                    if askyesno("Are you sure", "Are you sure for delete '{}' from your database ?".format(word)):
+                        Operations.delete_from_db(word)
+                        showinfo("Success", "'{}' successfully deleted from database.".format(word))
+                        entry.delete(0, tk.END)
+                    else:
+                        showinfo("Message", "'{}' is not deleted".format(word))
+                        entry.delete(0, tk.END)
                 else:
-                    showinfo("Message", "'{}' is not deleted".format(word))
+                    showinfo("Unknown word", "This word is not in your database.")
                     entry.delete(0, tk.END)
             else:
-                showinfo("Unknown word", "This word is not in your database.")
-                entry.delete(0, tk.END)
+                showerror("Error!", "You must fill the blank!")
 
         button = tk.Button(self, text="Remove",
                            command=remove_data)
@@ -222,14 +231,17 @@ class FindWords(tk.Frame):
             word = (str(entry.get()),)
             word_1 = str(entry.get())
             label_text = Operations.find_in_db(word)
-            if label_text != None:
-                label["text"] = label_text
-                label.grid(row=2, column=1)
-                entry.delete(0, tk.END)
-            else:
-                showinfo("Unknown Word", "There is no word ' {} ' in your database.".format(word_1))
-                label.grid(row=0,column=0)
-                entry.delete(0, tk.END)
+            if word_1 != "":
+                if label_text != None:
+                    label["text"] = label_text
+                    label.grid(row=2, column=1)
+                    entry.delete(0, tk.END)
+                else:
+                    showinfo("Unknown Word", "There is no word ' {} ' in your database.".format(word_1))
+                    label.grid(row=0,column=0)
+                    entry.delete(0, tk.END)
+
+            else: showerror("Error", "You must fill the blank !")
         button = tk.Button(self, text="Find",
                   command = create_label)
         button.grid(row=1, column=1)
