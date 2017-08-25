@@ -27,7 +27,7 @@ class PuzzleApp(tk.Tk):
         tk.Tk.__init__(self, *args, **kwargs)
         tk.Tk.wm_title(self, "Language Skills")
         self.resizable(width=False, height=False)
-        self.geometry('{}x{}'.format(372, 248))
+        self.geometry('{}x{}'.format(372, 372))
         
         container = tk.Frame(self)
         container.pack()
@@ -163,18 +163,20 @@ class DeleteWord(tk.Frame):
                          bg="gray", font=("Helvetica", 24))
         entry.grid(row=0, column=0, columnspan=3)
 
-        entry_1 = tk.Entry(self, relief=tk.RIDGE,
-                           borderwidth=5, width=20,
-                           bg="gray", font=("Helvetica", 24))
-        entry_1.grid(row=1, column=0, columnspan=3)
-
         def remove_data():
             word = str(entry.get())
-            mean = str(entry_1.get())
-            data = (word, mean)
-            Operations.delete_from_db(word)
-            entry.delete(0, tk.END)
-            entry_1.delete(0, tk.END)
+            word_1 = Operations.control_word_in_db(word)
+            if word_1 != None:
+                if askyesno("Are you sure", "Are you sure for delete '{}' from your database ?".format(word)):
+                    Operations.delete_from_db(word)
+                    showinfo("Success", "'{}' successfully deleted from database.".format(word))
+                    entry.delete(0, tk.END)
+                else:
+                    showinfo("Message", "'{}' is not deleted".format(word))
+                    entry.delete(0, tk.END)
+            else:
+                showinfo("Unknown word", "This word is not in your database.")
+                entry.delete(0, tk.END)
 
         button = tk.Button(self, text="Remove",
                            command=remove_data)
