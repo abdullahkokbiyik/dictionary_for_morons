@@ -143,14 +143,10 @@ class AddWords(tk.Frame):
 
                 entry.delete(0, tk.END)
                 entry_1.delete(0, tk.END)
-master
             else: 
                 showerror("Error", "You must fill all blanks !")
                 entry.delete(0, tk.END)
                 entry_1.delete(0, tk.END)
-
-            else: showerror("Error", "You must fill all blanks !")
-master
 
         button = tk.Button(self, text="Add",
                            command=add_data)
@@ -238,35 +234,20 @@ class FindWords(tk.Frame):
         entry.grid(row=1, column=0, columnspan=3)
 
         def create_label():
- master
             word = str(entry.get())
             format_word = (word,)
             label_text = Operations.find_in_db(format_word)
             if word != "":
-
-            word = (str(entry.get()),)
-            word_1 = str(entry.get())
-            label_text = Operations.find_in_db(word)
-            if word_1 != "":
- master
                 if label_text != None:
                     label["text"] = label_text
                     label.grid(row=2, column=1)
                     entry.delete(0, tk.END)
                 else:
- master
                     showinfo("Unknown Word", "There is no word ' {} ' in your database.".format(word))
                     entry.delete(0, tk.END)
 
             else: showerror("Error", "You must fill the blank !")
             
-
-                    showinfo("Unknown Word", "There is no word ' {} ' in your database.".format(word_1))
-                    label.grid(row=0,column=0)
-                    entry.delete(0, tk.END)
-
-            else: showerror("Error", "You must fill the blank !")
- master
         button = tk.Button(self, text="Find",
                   command = create_label)
         button.grid(row=3, column=1)
