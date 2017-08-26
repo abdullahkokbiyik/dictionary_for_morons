@@ -35,7 +35,8 @@ class PuzzleApp(tk.Tk):
 
         self.frames = {}
 
-        for F in (StartPage, AddWords, FindWords, Dictionary, WordQuiz, DeleteWord):
+        for F in (StartPage, AddWords, FindWords, Dictionary, WordQuiz, 
+                  DeleteWord):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -142,7 +143,14 @@ class AddWords(tk.Frame):
 
                 entry.delete(0, tk.END)
                 entry_1.delete(0, tk.END)
+master
+            else: 
+                showerror("Error", "You must fill all blanks !")
+                entry.delete(0, tk.END)
+                entry_1.delete(0, tk.END)
+
             else: showerror("Error", "You must fill all blanks !")
+master
 
         button = tk.Button(self, text="Add",
                            command=add_data)
@@ -217,39 +225,85 @@ class FindWords(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
+        prompt_label = tk.Label(self, text="Lang1 ---> Lang2")
+        prompt_label.grid(row=0, column=1)
+        prompt_label_1 = tk.Label(self, text="Lang2 ---> Lang1")
+        prompt_label_1.grid(row=4, column=1)
         label = tk.Label(self, text = "")
+        label_1 = tk.Label(self, text = "")
         
         entry = tk.Entry(self, relief = tk.RIDGE,
                          borderwidth=5, width=20,
                          bg="gray", font=("Helvetica", 24))
-        entry.grid(row=0, column=0, columnspan=3)
+        entry.grid(row=1, column=0, columnspan=3)
 
         def create_label():
+ master
+            word = str(entry.get())
+            format_word = (word,)
+            label_text = Operations.find_in_db(format_word)
+            if word != "":
+
             word = (str(entry.get()),)
             word_1 = str(entry.get())
             label_text = Operations.find_in_db(word)
             if word_1 != "":
+ master
                 if label_text != None:
                     label["text"] = label_text
                     label.grid(row=2, column=1)
                     entry.delete(0, tk.END)
                 else:
+ master
+                    showinfo("Unknown Word", "There is no word ' {} ' in your database.".format(word))
+                    entry.delete(0, tk.END)
+
+            else: showerror("Error", "You must fill the blank !")
+            
+
                     showinfo("Unknown Word", "There is no word ' {} ' in your database.".format(word_1))
                     label.grid(row=0,column=0)
                     entry.delete(0, tk.END)
 
             else: showerror("Error", "You must fill the blank !")
+ master
         button = tk.Button(self, text="Find",
                   command = create_label)
-        button.grid(row=1, column=1)
+        button.grid(row=3, column=1)
+        
+        entry_1 = tk.Entry(self, relief = tk.RIDGE,
+                         borderwidth=5, width=20,
+                         bg="gray", font=("Helvetica", 24))
+        entry_1.grid(row=5, column=0, columnspan=3)
+        
+        def create_label_1():
+            word = str(entry_1.get())
+            format_word = (word,)
+            label_text = Operations.find_in_db(format_word, 1)
+            if word != "":
+                if label_text != None:
+                    label_1["text"] = label_text
+                    label_1.grid(row=6, column=1)
+                    entry_1.delete(0, tk.END)
+                else:
+                    showinfo("Unknown Word", "There is no word ' {} ' in your database.".format(word))
+                    entry_1.delete(0, tk.END)
+
+            else: showerror("Error", "You must fill the blank !")
+        
+        button_2 = tk.Button(self, text="Find",
+                  command = create_label_1)
+        button_2.grid(row=7, column=1)
+        
         
         def chance_page():
             label.grid_forget()
+            label_1.grid_forget()
             controller.show_frame(StartPage)
             
         button1 = tk.Button(self, text="Back to Home",
                             command= chance_page)
-        button1.grid(row=4, column=1)
+        button1.grid(row=8, column=1)
         
         
 class Dictionary(tk.Frame):
@@ -358,9 +412,12 @@ class Operations:
         cls.cur.execute("INSERT INTO Dict VALUES (?, ?)",data)
         cls.stop_database()
     @classmethod    
-    def find_in_db(cls, word):
+    def find_in_db(cls, word, mode=0):
         cls.connect_database()
-        cls.cur.execute("SELECT Mean From Dict WHERE Word = ?",word)
+        if mode == 0:
+            cls.cur.execute("SELECT Mean From Dict WHERE Word = ?",word)
+        elif mode == 1:
+            cls.cur.execute("SELECT Word From Dict WHERE Mean = ?",word)
         mean = cls.cur.fetchone()
         cls.stop_database()
         return mean
