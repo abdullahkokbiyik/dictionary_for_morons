@@ -1,7 +1,7 @@
-# improve your language skills
+# Create your own Dictionary
 
-  Improve your language skills.
   You create can own dictionary with two languages.
+  Improve your language skills.
 
 ## Prerequisites
 
