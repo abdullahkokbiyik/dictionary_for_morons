@@ -1,4 +1,4 @@
-# Create your own Dictionary
+# dictionary_for_morons
 -----------------------------------------------------
 You create can own dictionary with two languages.
 Of course, you are a moron.
