@@ -10,7 +10,7 @@ Also, it require python 3x tkinter package.
 ### Usage
 ------------------------------------------------------
 1. Download source code.
-2. With 'cd' command readch folder that it was downloaded in terminal.
+2. With 'cd' command reach folder that it was downloaded in terminal.
 3. Depend on your os, run with python 3x on terminal.
 4. For linux python/python3 dictionary_for_morons.py
 5. For windows python.exe dictionary_for_morons.py
